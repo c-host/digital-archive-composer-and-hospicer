@@ -36,6 +36,19 @@ h2 {
 
 .memory-seed {
     background-color: #e6f7ff;
+    border: 1px solid #91d5ff;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.memory-seed h3 {
+    color: #0050b3;
+    margin-top: 0;
+}
+
+.memory-seed p {
+    margin: 5px 0;
 }
 
 .composted {
@@ -91,4 +104,27 @@ h2 {
     max-width: 100%;
     height: auto;
     margin-top: 10px;
+}
+
+.quote-container {
+    margin-top: 10px;
+    border-left: 3px solid #3498db;
+    padding-left: 10px;
+}
+
+.quote-context {
+    font-style: italic;
+    color: #555;
+}
+
+.expand-quote {
+    color: #3498db;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.paper-quote {
+    margin-top: 5px;
+    font-style: italic;
+    color: #333;
 }

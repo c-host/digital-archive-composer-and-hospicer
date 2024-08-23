@@ -1,0 +1,17 @@
+{
+    "name": "digital-composting-journey",
+    "version": "1.0.0",
+    "description": "An interactive web application for digital composting and hospicing of memories",
+    "main": "src/js/main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "digital",
+        "composting",
+        "hospicing",
+        "memories"
+    ],
+    "author": "Your Name",
+    "license": "MIT"
+}

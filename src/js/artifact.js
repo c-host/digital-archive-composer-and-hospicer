@@ -6,7 +6,7 @@ export class Artifact {
         this.location = location;
         this.people = people;
         this.emotions = emotions;
-        this.image = image;
+        this.image = image; // This will be a data URL
         this.type = type; // 'personal', 'social media', 'professional', etc.
         this.intentionality = intentionality; // 'IDM' or 'ADM'
     }
@@ -19,7 +19,7 @@ export class Artifact {
             'Paris, France',
             ['Sarah', 'John', 'Emma'],
             ['Excited', 'Awestruck', 'Joyful'],
-            'https://example.com/eiffel_tower.jpg',
+            null, // We'll use null as the default, and let the user upload an image
             'social media',
             'IDM'
         );

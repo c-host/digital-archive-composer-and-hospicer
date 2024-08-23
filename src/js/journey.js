@@ -114,7 +114,8 @@ export class Journey {
 
     start() {
         console.log('Journey started');
-        this.addRelevantQuote(this.steps[0].type); // Add the first relevant quote
+        this.addRelevantQuote(this.steps[0].type);
+        this.showProceedButton();
         this.proceedToNextStep();
     }
 
@@ -132,29 +133,33 @@ export class Journey {
             switch (step.type) {
                 case 'story':
                     this.addElement('story', `<p>${step.content}</p>`);
+                    this.showProceedButton();
                     break;
                 case 'upload':
                     this.uploadArtifact();
-                    document.getElementById('proceedButton').style.display = 'none';
+                    this.hideProceedButton();
                     break;
                 case 'memory-seed':
                     this.createMemorySeed();
+                    this.showProceedButton();
                     break;
                 case 'composted':
                     this.createCompostedMemory();
+                    this.showProceedButton();
                     break;
                 case 'hospiced':
                     this.setupHospice();
-                    document.getElementById('proceedButton').style.display = 'none';
+                    this.hideProceedButton();
                     break;
                 case 'time-simulation':
                     this.addTimeSimulation();
+                    this.hideProceedButton();
                     break;
             }
             this.currentStep++;
         }
         if (this.currentStep >= this.steps.length) {
-            document.getElementById('proceedButton').style.display = 'none';
+            this.hideProceedButton();
             this.addFinalReflection();
         }
     }
@@ -244,7 +249,7 @@ export class Journey {
 
         this.addElement('story', `<p>Rem: "These hospice parameters reflect our attempts to control our digital legacies. Your memory will be retained for ${this.hospiceParameters.retentionPeriod} years with ${this.hospiceParameters.accessFrequency} access frequency. At the end of its life, it will be ${this.hospiceParameters.endOfLifeAction}d. The risk of experiencing a 'second loss' with these parameters is ${this.secondLossRisk}%. Consider how this relates to the concept of 'perpetual bereavement' discussed in the 'Only Loss' paper."</p>`);
 
-        document.getElementById('proceedButton').style.display = 'block';
+        this.showProceedButton();
     }
 
     calculateSecondLossRisk() {
@@ -323,6 +328,9 @@ export class Journey {
                     <option value="ADM">Accidental Digital Memory (ADM) - unintentionally captured</option>
                 </select>
                 
+                <label for="image">Image: <span class="info">(Upload an image related to this memory)</span></label>
+                <input type="file" id="image" accept="image/*">
+                
                 <button onclick="submitArtifact()">Submit</button>
             </div>
         `;
@@ -330,6 +338,7 @@ export class Journey {
     }
 
     submitArtifact() {
+        console.log("submitArtifact method called");
         const title = document.getElementById('title').value;
         const description = document.getElementById('description').value;
         const date = document.getElementById('date').value;
@@ -339,10 +348,33 @@ export class Journey {
         const type = document.getElementById('type').value;
         const intentionality = document.getElementById('intentionality').value;
 
-        this.originalArtifact = new Artifact(title, description, date, location, people, emotions, null, type, intentionality);
+        console.log("Artifact details:", { title, description, date, location, people, emotions, type, intentionality });
 
-        this.addElement('story', `<p>Thank you for sharing your ${intentionality} artifact. Let's proceed with creating a memory seed.</p>`);
-        document.getElementById('proceedButton').style.display = 'block';
+        const imageFile = document.getElementById('image').files[0];
+        if (imageFile) {
+            console.log("Image file selected:", imageFile.name);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                console.log("Image file read successfully");
+                this.originalArtifact = new Artifact(title, description, date, location, people, emotions, e.target.result, type, intentionality);
+                console.log("Original artifact created:", this.originalArtifact);
+                this.addThankYouMessage(intentionality);
+            };
+            reader.readAsDataURL(imageFile);
+        } else {
+            console.log("No image file selected");
+            this.originalArtifact = new Artifact(title, description, date, location, people, emotions, null, type, intentionality);
+            console.log("Original artifact created:", this.originalArtifact);
+            this.addThankYouMessage(intentionality);
+        }
+    }
+
+    addThankYouMessage(intentionality) {
+        console.log("Adding thank you message");
+        this.addElement('story', `<p>Thank you for sharing your ${intentionality} artifact. We'll now create a 'memory seed', demonstrating how digital memories can be transformed and compressed, challenging the notion of digital essentialism.</p>`);
+        console.log("Displaying proceed button");
+        this.showProceedButton();
+        this.proceedToNextStep();
     }
 
     createMemorySeed() {
@@ -416,8 +448,6 @@ export class Journey {
             <div class="digital-will">
                 <h3>Your Digital Will</h3>
                 <textarea id="digital-will-content">${willContent}</textarea>
-                <button id="save-will">Save Changes</button>
-                <button id="download-will">Download Will</button>
             </div>
         `;
         const existingWill = document.querySelector('.digital-will');
@@ -439,5 +469,13 @@ export class Journey {
             willContent += `Year ${reflection.year}: ${reflection.text}\n\n`;
         });
         return willContent;
+    }
+
+    showProceedButton() {
+        document.getElementById('proceedButton').style.display = 'block';
+    }
+
+    hideProceedButton() {
+        document.getElementById('proceedButton').style.display = 'none';
     }
 }

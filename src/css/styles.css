@@ -167,8 +167,20 @@ label {
     margin-bottom: 20px;
 }
 
-#transformedArtifact {
+#transformedArtifact img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #00ff00;
+    margin-top: 10px;
+}
+
+.artifact-input input[type="file"] {
+    width: 100%;
     margin-bottom: 20px;
+    color: #00ff00;
+    background-color: #000000;
+    border: 1px solid #00ff00;
+    padding: 5px;
 }
 
 #reflectionPrompt {
@@ -177,6 +189,13 @@ label {
 
 #digitalWill {
     margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#save-will,
+#download-will {
+    margin-top: 10px;
+    margin-right: 10px;
 }
 
 .edit-will-notice {
@@ -195,4 +214,8 @@ label {
 
 .submit-reflection {
     margin-bottom: 30px;
+}
+
+#proceedButton {
+    display: none;
 }

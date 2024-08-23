@@ -7,45 +7,50 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
         journey = new Journey();
         console.log('Journey instance created:', journey);
-        document.getElementById('proceedButton').addEventListener('click', () => journey.proceedToNextStep());
+
+        const proceedButton = document.getElementById('proceedButton');
+        if (proceedButton) {
+            console.log('Proceed button found, adding event listener');
+            proceedButton.addEventListener('click', () => {
+                console.log('Proceed button clicked');
+                journey.proceedToNextStep();
+            });
+        } else {
+            console.error('Proceed button not found in the DOM');
+        }
+
         journey.start();
     } catch (error) {
         console.error('Error creating or starting Journey:', error);
     }
 
     // Make functions globally accessible
-    window.submitArtifact = () => journey.submitArtifact();
+    window.submitArtifact = () => {
+        console.log('Global submitArtifact function called');
+        journey.submitArtifact();
+    };
     window.setHospiceParameters = () => journey.setHospiceParameters();
 
-    // Handle quote expansion
-    document.body.addEventListener('click', (event) => {
-        if (event.target.classList.contains('expand-quote')) {
-            const quote = event.target.nextElementSibling;
-            if (quote.style.display === 'none') {
-                quote.style.display = 'block';
-                event.target.textContent = '[Collapse Quote]';
-            } else {
-                quote.style.display = 'none';
-                event.target.textContent = '[Expand Quote]';
+    // Handle image upload preview
+    document.body.addEventListener('change', (event) => {
+        if (event.target.id === 'image') {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.createElement('img');
+                    preview.src = e.target.result;
+                    preview.style.maxWidth = '100%';
+                    preview.style.height = 'auto';
+                    const container = event.target.parentElement;
+                    const existingPreview = container.querySelector('img');
+                    if (existingPreview) {
+                        container.removeChild(existingPreview);
+                    }
+                    container.appendChild(preview);
+                };
+                reader.readAsDataURL(file);
             }
-        }
-    });
-
-    // Handle digital will actions
-    document.body.addEventListener('click', (event) => {
-        if (event.target.id === 'save-will') {
-            const willContent = document.getElementById('digital-will-content').value;
-            // Save will content (you might want to send this to a server in a real application)
-            console.log('Will saved:', willContent);
-        } else if (event.target.id === 'download-will') {
-            const willContent = document.getElementById('digital-will-content').value;
-            const blob = new Blob([willContent], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'digital_will.txt';
-            a.click();
-            URL.revokeObjectURL(url);
         }
     });
 });

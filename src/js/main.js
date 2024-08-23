@@ -1,11 +1,11 @@
 import { Journey } from './journey.js';
 
-let journey; // Declare journey in a higher scope
+let journey;
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded and parsed');
     try {
-        journey = new Journey(); // Assign to the higher scoped variable
+        journey = new Journey();
         console.log('Journey instance created:', journey);
         document.getElementById('proceedButton').addEventListener('click', () => journey.proceedToNextStep());
         journey.start();
@@ -13,27 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error creating or starting Journey:', error);
     }
 
-    // Make submitArtifact and setHospiceParameters globally accessible
-    window.submitArtifact = () => {
-        if (journey && typeof journey.submitArtifact === 'function') {
-            journey.submitArtifact();
-        } else {
-            console.error('Journey not initialized or submitArtifact is not a function');
-        }
-    };
-
-    window.setHospiceParameters = () => {
-        if (journey && typeof journey.setHospiceParameters === 'function') {
-            journey.setHospiceParameters();
-        } else {
-            console.error('Journey not initialized or setHospiceParameters is not a function');
-        }
-    };
+    // Make functions globally accessible
+    window.submitArtifact = () => journey.submitArtifact();
+    window.setHospiceParameters = () => journey.setHospiceParameters();
 
     // Handle quote expansion
     document.body.addEventListener('click', (event) => {
         if (event.target.classList.contains('expand-quote')) {
-            const quote = event.target.closest('.quote-container').querySelector('.paper-quote');
+            const quote = event.target.nextElementSibling;
             if (quote.style.display === 'none') {
                 quote.style.display = 'block';
                 event.target.textContent = '[Collapse Quote]';
@@ -41,6 +28,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 quote.style.display = 'none';
                 event.target.textContent = '[Expand Quote]';
             }
+        }
+    });
+
+    // Handle digital will actions
+    document.body.addEventListener('click', (event) => {
+        if (event.target.id === 'save-will') {
+            const willContent = document.getElementById('digital-will-content').value;
+            // Save will content (you might want to send this to a server in a real application)
+            console.log('Will saved:', willContent);
+        } else if (event.target.id === 'download-will') {
+            const willContent = document.getElementById('digital-will-content').value;
+            const blob = new Blob([willContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'digital_will.txt';
+            a.click();
+            URL.revokeObjectURL(url);
         }
     });
 });

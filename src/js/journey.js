@@ -297,10 +297,10 @@ export class Journey {
                 <h3>Upload Digital Artifact</h3>
                 <p>Please fill in the details about your digital memory. For testing purposes, the form is pre-filled with dummy data.</p>
                 
-                <label for="title">Title: <span class="info">(A brief, descriptive name for your memory)</span></label>
+                <label for="title">Title: <span class="info">(A brief, descriptive name for your memory.)</span></label>
                 <input type="text" id="title" value="Summer Vacation in Paris" required>
                 
-                <label for="description">Description: <span class="info">(Provide a detailed account of your memory)</span></label>
+                <label for="description">Description: <span class="info">(Provide a detailed account of your memory.)</span></label>
                 <textarea id="description" required>Standing in front of the Eiffel Tower, feeling on top of the world. The city lights twinkled below as the sun set, painting the sky in vibrant oranges and pinks.</textarea>
                 
                 <label for="date">Date: <span class="info">(When did this memory occur?)</span></label>
@@ -309,10 +309,10 @@ export class Journey {
                 <label for="location">Location: <span class="info">(Where did this memory take place?)</span></label>
                 <input type="text" id="location" value="Paris, France" required>
                 
-                <label for="people">People: <span class="info">(Who was involved in this memory? Separate names with commas)</span></label>
+                <label for="people">People: <span class="info">(Who was involved in this memory? Separate names with commas.)</span></label>
                 <input type="text" id="people" value="Sarah, John, Emma" required>
                 
-                <label for="emotions">Emotions: <span class="info">(What feelings are associated with this memory? Separate emotions with commas)</span></label>
+                <label for="emotions">Emotions: <span class="info">(What feelings are associated with this memory? Separate emotions with commas.)</span></label>
                 <input type="text" id="emotions" value="Excited, Awestruck, Joyful" required>
                 
                 <label for="type">Type: <span class="info">(What kind of digital artifact is this?)</span></label>
@@ -328,7 +328,7 @@ export class Journey {
                     <option value="ADM">Accidental Digital Memory (ADM) - unintentionally captured</option>
                 </select>
                 
-                <label for="image">Image: <span class="info">(Upload an image related to this memory)</span></label>
+                <label for="image">Image: <span class="info">(Upload an image related to this memory.)</span></label>
                 <input type="file" id="image" accept="image/*">
                 
                 <button onclick="submitArtifact()">Submit</button>
